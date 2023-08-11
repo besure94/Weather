@@ -5,7 +5,7 @@ import './css/styles.css';
 
 function getWeather(city) {
   let request = new XMLHttpRequest();
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${process.env.API_KEY}`;
   request.addEventListener("loadend", function() {
     const response = JSON.parse(this.responseText);
     console.log(response);
@@ -25,7 +25,7 @@ function printError(request, apiResponse, city) {
 }
 
 function printElements(apiResponse, city) {
-  document.querySelector('#showResponse').innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%. The temperature in Kelvins is ${apiResponse.main.temp} degrees.`;
+  document.querySelector('#showResponse').innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%. The temperature is ${apiResponse.main.temp} degrees Fahrenheit. The temperature feels like ${apiResponse.main.feels_like} degrees. The low for today is ${apiResponse.main.temp_min} degrees, and the high for today is ${apiResponse.main.temp_max} degrees. The wind speed is ${apiResponse.wind.speed} miles per hour.`;
 }
 
 function handleFormSubmission(event) {
