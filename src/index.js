@@ -3,22 +3,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 import WeatherService from './weather-service.js';
 
-
-function getWeather(city) {
-  let promise = WeatherService.getWeather(city);
-  promise.then(function(weatherDataArray) {
-    printElements(weatherDataArray);
-  }, function(errorArray) {
-    printError(errorArray);
-  });
+async function getWeather(city) {
+  const response = await WeatherService.getWeather(city);
+  if (response.main) {
+    printElements(response, city);
+  } else {
+    printError(response, city);
+  }
 }
 
-function printElements(data) {
-  document.querySelector('#showResponse').innerText = `The humidity in ${data[1]} is ${data[0].main.humidity}%. The temperature is ${data[0].main.temp} degrees Fahrenheit. The temperature feels like ${data[0].main.feels_like} degrees. The low for today is ${data[0].main.temp_min} degrees, and the high for today is ${data[0].main.temp_max} degrees. The wind speed is ${data[0].wind.speed} miles per hour.`;
+function printElements(response, city) {
+  document.querySelector('#showResponse').innerText = `The humidity in ${city} is ${response.main.humidity}%. The temperature is ${response.main.temp} degrees Fahrenheit. The temperature feels like ${response.main.feels_like} degrees. The low for today is ${response.main.temp_min} degrees, and the high for today is ${response.main.temp_max} degrees. The wind speed is ${response.wind.speed} miles per hour.`;
 }
 
-function printError(error) {
-  document.querySelector('#showResponse').innerText = `There was an error accessing the weather data for ${error[2]}: ${error[0].status} ${error[0].statusText}`;
+function printError(error, city) {
+  document.querySelector('#showResponse').innerText = `There was an error accessing the weather data for ${city}: ${error}.`;
 }
 
 function handleFormSubmission(event) {
